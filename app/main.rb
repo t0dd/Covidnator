@@ -12,8 +12,13 @@ class CovidnatorGame
     outputs.solids << [0,0,W,H, 130,130,130]
   end
 
+  def render_player
+    outputs.sprites << [W/2, 24, 128/5, 71/4, 'sprites/player.png']
+  end
+
   def render 
     render_background 
+    render_player
   end
 end
 
