@@ -6,6 +6,8 @@ class CovidnatorGame
 
   def defaults
     state.player.x ||= W/2
+    state.player.y ||= 24
+    state.player.speed ||= 3
   end
 
   def tick
@@ -19,7 +21,7 @@ class CovidnatorGame
   end
 
   def render_player
-    outputs.sprites << [state.player.x, 24, 128/5, 71/4, 'sprites/player.png']
+    outputs.sprites << [state.player.x, state.player.y, 128/5, 71/4, 'sprites/player.png']
   end
 
   def render 
@@ -32,11 +34,17 @@ class CovidnatorGame
   end
 
   def process_inputs_game
-    
+    # keyboard input -------------------------
     if inputs.keyboard.key_held.right
-      state.player.x += 10
+      state.player.x += 6
     elsif args.inputs.keyboard.key_held.left
-      state.player.x -= 10
+      state.player.x -= 6
+    end
+
+    if inputs.keyboard.key_held.up
+      state.player.y += state.player.speed
+    elsif args.inputs.keyboard.key_held.down
+      state.player.y -= state.player.speed
     end
   end
 end
