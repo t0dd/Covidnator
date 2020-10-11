@@ -1,6 +1,6 @@
-#devid=myname
-#devtitle=My Name
-#gameid=covidnator
-#gametitle=Covidnator
-#version=0.1
-#icon=metadata/icon.png
+devid=t0dd
+devtitle=Todd Mahoney
+gameid=covidnator
+gametitle=Covidnator
+version=0.1
+icon=metadata/icon.png
