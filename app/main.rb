@@ -5,10 +5,13 @@ class CovidnatorGame
   H = 720
 
   def defaults
-    state.player.x ||= W/2
-    state.player.y ||= 24
-    state.player.speed ||= 3
-    state.player.direction ||= 0
+    state.player.x ||= W - 40
+    state.player.y ||= 12
+    state.player.thrust ||= 0
+    state.player.angle ||= 0
+    state.player.velRot ||= 0    #velocity rotation
+    state.player.vx ||= 0
+    state.player.vy ||= 0
   end
 
   def tick
@@ -25,7 +28,7 @@ class CovidnatorGame
   end
 
   def render_player
-    outputs.sprites << [state.player.x, state.player.y, 623/20, 658/20, 'sprites/player.png', state.player.direction]
+    outputs.sprites << [state.player.x, state.player.y, 623/20, 658/20, 'sprites/player.png', state.player.angle]
   end
 
   def render 
@@ -39,22 +42,32 @@ class CovidnatorGame
   end
 
   def process_inputs_game
-    # keyboard input -------------------------
+    # player movement calculations --------------------------------------
+    state.player.rotation += state.player.velRot
+    state.player.angle = state.player.rotation * Math::PI/180
+    state.player.ax = Math::cos(state.player.angle) * state.player.thrust
+    state.player.ay = Math::sin(state.player.angle) * state.player.thrust
+    state.player.vx += state.player.ax
+    state.player.vy += state.player.ay
+    state.player.x += state.player.vx 
+    state.player.y += state.player.vy
+
+    # keyboard input -------------------------------------------------------
+    if inputs.keyboard.key_up
+      state.player.velRot = 0
+      state.player.thrust = 0
+    end
+
     if inputs.keyboard.key_held.right
-      state.player.x += state.player.speed
-      state.player.direction = 270
+      state.player.velRot = -5
     elsif args.inputs.keyboard.key_held.left
-      state.player.x -= state.player.speed
-      state.player.direction = 90
+      state.player.velRot = 5
     end
 
     if inputs.keyboard.key_held.up
-      state.player.y += state.player.speed
-      state.player.direction = 0
-    elsif args.inputs.keyboard.key_held.down
-      state.player.y -= state.player.speed
-      state.player.direction = 180
+      state.player.thrust = 0.1
     end
+
   end
 end
 
